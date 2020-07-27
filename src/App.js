@@ -1,12 +1,13 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import {getSummonerByName} from "./api/LoLGetCalls"
+import { getSummonerByName } from "./api/LoLGetCalls";
 
 function App() {
-
   React.useState(() => {
-    getSummonerByName('TinderIsOk').then(data => console.log(data))
+    getSummonerByName("na1.api.riotgames.com", "TinderIsOk").then((data) =>
+      console.log(data)
+    );
   }, []);
 
   return (

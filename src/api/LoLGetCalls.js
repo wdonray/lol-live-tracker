@@ -1,16 +1,22 @@
 import axios from "axios";
 
-export let getSummonerByName = async (summonerName) => {
+export const endPoints = {
+  getSummonerByName:
+    "https://kgbyg1p6di.execute-api.us-east-1.amazonaws.com/dev/getSummonerByName",
+};
+
+export let getSummonerByName = async (region, summonerName) => {
   try {
     const { data } = await axios({
-      method: "GET",
-      url: `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`,
-      params: {
-        api_key: '',
-      },
+      method: "post",
+      url: endPoints.getSummonerByName,
+      data: {
+        region,
+        summonerName,
+      }
     });
     return data;
   } catch (err) {
-    throw new Error("Failed to fetch summoner by summonerName");
+    throw new Error(err);
   }
 };
