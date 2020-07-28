@@ -5,7 +5,7 @@ import { getSummonerByName } from "./api/LoLGetCalls";
 
 function App() {
   React.useState(() => {
-    getSummonerByName("na1.api.riotgames.com", "TinderIsOk").then((data) =>
+    getSummonerByName("na1.api.riotgames.com", "EASYROLEXD123").then((data) =>
       console.log(data)
     );
   }, []);

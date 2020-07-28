@@ -7,13 +7,9 @@ export const endPoints = {
 
 export let getSummonerByName = async (region, summonerName) => {
   try {
-    const { data } = await axios({
-      method: "post",
-      url: endPoints.getSummonerByName,
-      data: {
-        region,
-        summonerName,
-      }
+    const { data } = await axios.post(endPoints.getSummonerByName, {
+      region: region,
+      summonerName: summonerName,
     });
     return data;
   } catch (err) {
