@@ -1,0 +1,96 @@
+.App {
+  text-align: center;
+  background-color: #202020;
+}
+
+.App-header {
+  background-color: #3277A3;
+  min-height: 5vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-linkContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  position: relative;
+  padding: 10px;
+  margin-left: 2vw;
+  font-family: helvetica;
+  font-size: 1.3rem;
+}
+
+a:before,
+a:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+}
+
+a:before {
+  height: 0%;
+  border-top: 2px solid #7DB2D4;
+  bottom: 0;
+  left: 0;
+  transition: height 0.3s ease;
+}
+a:after {
+  height: 100%;
+  border-bottom: 2px solid #7DB2D4;
+  bottom: 0;
+  left: 0;
+  transition: transform 0.2s ease;
+}
+a:hover:before {
+  height: 100%;
+  transform: scale(1.08);
+  transition: all 0.3s ease;
+}
+
+a:hover:after {
+  transform: scale(1.08);
+  transition: transform 0.4s ease;
+}
+
+@media only screen and (max-width: 600px) {
+  a {
+    font-size: 0.8rem;
+  }
+}
+
+.App-inputContainer {
+  margin-right: 2vw;
+  margin: 1vh;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px 30px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 600px) {
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 8px 0;
+  }
+}

@@ -3,6 +3,12 @@ import axios from "axios";
 export const endPoints = {
   getSummonerByName:
     "https://kgbyg1p6di.execute-api.us-east-1.amazonaws.com/dev/getSummonerByName",
+  getMatchHistory:
+    "https://kgbyg1p6di.execute-api.us-east-1.amazonaws.com/dev/getMatchHistory",
+  getActiveGame:
+    "https://kgbyg1p6di.execute-api.us-east-1.amazonaws.com/dev/getActiveGame",
+  getSummonerStats:
+    "https://kgbyg1p6di.execute-api.us-east-1.amazonaws.com/dev/getSummonerStats",
 };
 
 export let getSummonerByName = async (region, summonerName) => {
@@ -10,6 +16,42 @@ export let getSummonerByName = async (region, summonerName) => {
     const { data } = await axios.post(endPoints.getSummonerByName, {
       region: region,
       summonerName: summonerName,
+    });
+    return data;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export let getMatchHistory = async (region, encryptedAccountId) => {
+  try {
+    const { data } = await axios.post(endPoints.getMatchHistory, {
+      region: region,
+      encryptedAccountId: encryptedAccountId,
+    });
+    return data;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export let getActiveGame = async (region, encryptedSummonerId) => {
+  try {
+    const { data } = await axios.post(endPoints.getActiveGame, {
+      region: region,
+      encryptedSummonerId: encryptedSummonerId,
+    });
+    return data;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export let getSummonerStats = async (region, encryptedSummonerId) => {
+  try {
+    const { data } = await axios.post(endPoints.getSummonerStats, {
+      region: region,
+      encryptedSummonerId: encryptedSummonerId,
     });
     return data;
   } catch (err) {
