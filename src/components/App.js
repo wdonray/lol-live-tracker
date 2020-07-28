@@ -1,14 +1,17 @@
 import React from "react";
 import "../style/App.css";
+import HomePage from "./Home";
+import Stats from "./Stats";
+import LiveGame from "./LiveGame";
 
 const Routes = ({ pathname }) => {
   switch (pathname) {
     case "/":
-      return <div style={{ color: "white" }}>Home</div>;
+      return <HomePage />;
     case "/stats":
-      return <div style={{ color: "white" }}>Stats</div>;
+      return <Stats />;
     case "/live-game":
-      return <div style={{ color: "white" }}>Live Game</div>;
+      return <LiveGame />;
     default:
       return <div style={{ color: "white" }}>404 Error</div>;
   }
