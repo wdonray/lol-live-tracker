@@ -1,34 +1,23 @@
 import React from "react";
 import "../style/App.css";
-import HomePage from "./Home";
+import Home from "./Home";
 import Stats from "./Stats";
 import LiveGame from "./LiveGame";
-
-const Routes = ({ pathname }) => {
-  switch (pathname) {
-    case "/":
-      return <HomePage />;
-    case "/stats":
-      return <Stats />;
-    case "/live-game":
-      return <LiveGame />;
-    default:
-      return <div style={{ color: "white" }}>404 Error</div>;
-  }
-};
+import { Switch, Route, Link, useLocation } from "react-router-dom";
 
 function App() {
+  let location = useLocation();
   return (
     <div className="App">
       <header className="App-header">
         <div className="LinkContainer">
-          <a href="/">Home</a>
-          <a href="stats">Stats</a>
-          <a href="live-game">Live Game</a>
+          <Link to="/">Home</Link>
+          <Link to="/stats">Stats</Link>
+          <Link to="/live-game">Live Game</Link>
         </div>
         <div className={"App-inputContainer"}>
           <input
-            style={{ opacity: window.location.pathname === "/" ? 0 : 1 }}
+            style={{ opacity: location.pathname === "/" ? 0 : 1 }}
             type="text"
             name="search"
             placeholder="Summoner Name..."
@@ -36,7 +25,17 @@ function App() {
         </div>
       </header>
       <div style={{ marginTop: "5vh" }}>
-        <Routes pathname={window.location.pathname} />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/stats">
+            <Stats />
+          </Route>
+          <Route path="/live-game">
+            <LiveGame />
+          </Route>
+        </Switch>
       </div>
     </div>
   );
