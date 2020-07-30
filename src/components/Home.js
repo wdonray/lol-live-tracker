@@ -1,22 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
 import { changeRegion } from "../redux/actions/regionActions";
+import { searchSummoner } from "../redux/actions/summonerStatsActions";
 import regions from "../redux/constants/regions";
 import "../style/HomeStyle.css";
 
 let mapState = (store) => {
   return {
     regionState: store.region,
+    statsState: store.stats,
   };
 };
 
 let mapDispatch = (dispatch) => {
   return {
     changeRegion: (value) => dispatch(changeRegion(value)),
+    searchSummoner: (region, summonerName, endIndex) =>
+      dispatch(searchSummoner(region, summonerName, endIndex)),
   };
 };
 
-function Home({ regionState, changeRegion }) {
+function Home({ regionState, changeRegion, searchSummoner }) {
+  let [summonerName, updateSummonerName] = React.useState("");
   return (
     <div className={"centerContainer"}>
       <div>
@@ -28,10 +33,14 @@ function Home({ regionState, changeRegion }) {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          console.log("GO");
+          searchSummoner(regionState.region, summonerName, 5);
         }}
       >
-        <input placeholder="Summoner Name..." />
+        <input
+          placeholder="Summoner Name..."
+          value={summonerName}
+          onChange={(event) => updateSummonerName(event.target.value)}
+        />
         <select
           value={Object.keys(regions).find(
             (key) => regions[key] === regionState.region

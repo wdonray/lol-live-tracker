@@ -63,9 +63,48 @@ input:focus {
   outline: none;
 }
 
+p {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  position: relative;
+  padding: 10px;
+  font-family: helvetica;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+p:before,
+p:after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transition: all 0.3s ease;
+}
+p:before {
+  top: -2.5%;
+  left: -1%;
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+}
+p:after {
+  bottom: -2.5%;
+  right: -1%;
+  border-bottom: 2px solid white;
+  border-right: 2px solid white;
+}
+p:hover:before,
+p:hover:after {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
 @media only screen and (max-width: 600px) {
   input {
     font-size: 0.8rem;
+    width: 20vw;
   }
   form {
     width: 75vw;
@@ -73,49 +112,10 @@ input:focus {
   select {
     width: 12vw;
     margin: 0;
+    height: 100%;
+    font-size: 0.8rem;
+  }
+  p {
     font-size: 0.8rem;
   }
 }
-
-p {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    position: relative;
-    padding: 10px;
-    font-family: helvetica;
-    font-size: 1.3rem;
-    cursor: pointer;
-  }
-  
-  p:before, p:after{
-	content: '';
-	position: absolute;
-	width: 10px;
-	height: 10px;
-	transition: all 0.3s ease;
-}
-p:before{
-	top: -2.5%;
-	left: -1%;
-	border-top: 2px solid white;
-	border-left: 2px solid white;	
-}
-p:after{
-	bottom: -2.5%;
-	right: -1%;
-	border-bottom: 2px solid white;
-	border-right: 2px solid white;
-}
-p:hover:before, p:hover:after{
-	width: 100%;
-	height: 100%;
-	transition: all 0.3s ease;
-}
-
-  
-  @media only screen and (max-width: 600px) {
-    p {
-      font-size: 0.8rem;
-    }
-  }

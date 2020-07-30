@@ -1,3 +1,9 @@
 export const RegionTypes = {
   CHANGE_REGION: "CHANGE_REGION",
 };
+
+export const StatsTypes = {
+  UPDATE_SUMMONER: "UPDATE_SUMMONER",
+  UPDATE_MATCH_HISTORY: "UPDATE_MATCH_HISTORY",
+  UPDATE_LOADING: "UPDATE_LOADING"
+};

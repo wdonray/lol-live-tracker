@@ -23,11 +23,12 @@ export let getSummonerByName = async (region, summonerName) => {
   }
 };
 
-export let getMatchHistory = async (region, encryptedAccountId) => {
+export let getMatchHistory = async (region, encryptedAccountId, endIndex) => {
   try {
     const { data } = await axios.post(endPoints.getMatchHistory, {
       region: region,
       encryptedAccountId: encryptedAccountId,
+      count: endIndex
     });
     return data;
   } catch (err) {
