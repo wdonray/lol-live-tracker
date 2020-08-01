@@ -42,7 +42,7 @@ function SearchFrom({
       onSubmit={(event) => {
         event.preventDefault();
         if (!statsState.loading) {
-          searchSummoner(regionState.region, summonerName, 5).then((data) => {
+          searchSummoner(regionState.region, summonerName, 10).then((data) => {
             history.push("/stats");
             updateLoading(false);
             if (data.payload instanceof Error) {
