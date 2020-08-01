@@ -19,7 +19,7 @@ export let getSummonerByName = async (region, summonerName) => {
     });
     return data;
   } catch (err) {
-    throw new Error(err);
+    return err;
   }
 };
 
@@ -28,11 +28,11 @@ export let getMatchHistory = async (region, encryptedAccountId, endIndex) => {
     const { data } = await axios.post(endPoints.getMatchHistory, {
       region: region,
       encryptedAccountId: encryptedAccountId,
-      count: endIndex
+      count: endIndex,
     });
     return data;
   } catch (err) {
-    throw new Error(err);
+    return err;
   }
 };
 
@@ -44,7 +44,7 @@ export let getActiveGame = async (region, encryptedSummonerId) => {
     });
     return data;
   } catch (err) {
-    throw new Error(err);
+    return err;
   }
 };
 
@@ -56,6 +56,6 @@ export let getSummonerStats = async (region, encryptedSummonerId) => {
     });
     return data;
   } catch (err) {
-    throw new Error(err);
+    return err;
   }
 };

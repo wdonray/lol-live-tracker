@@ -3,12 +3,22 @@ import "../style/App.css";
 import Home from "./Home";
 import Stats from "./Stats";
 import LiveGame from "./LiveGame";
-import { Switch, Route, Link, useLocation } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
+import SearchForm from "./helpers/SearchForm";
+
+export let snackBar = () => {
+  let x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
 
 function App() {
-  let location = useLocation();
+
   return (
     <div className="App">
+      <div id="snackbar">Error searching for summoner</div>
       <header className="App-header">
         <div className="LinkContainer">
           <Link to="/">Home</Link>
@@ -16,12 +26,7 @@ function App() {
           <Link to="/live-game">Live Game</Link>
         </div>
         <div className={"App-inputContainer"}>
-          <input
-            style={{ opacity: location.pathname === "/" ? 0 : 1 }}
-            type="text"
-            name="search"
-            placeholder="Summoner Name..."
-          />
+          <SearchForm header={true} />
         </div>
       </header>
       <div style={{ marginTop: "5vh" }}>

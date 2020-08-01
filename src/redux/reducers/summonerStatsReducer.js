@@ -2,21 +2,24 @@ import { StatsTypes } from "../constants/actionTypes";
 
 const initState = {
   loading: false,
-  accountId: null,
-  profileIconId: null,
-  revisionDate: null,
-  name: null,
-  id: null,
-  puuid: null,
-  summonerLevel: null,
 };
 
 export default (state = initState, action) => {
   switch (action.type) {
     case StatsTypes.UPDATE_SUMMONER: {
+      if (typeof action.payload === "undefined") {
+        return { ...state };
+      } else if (Object.keys(action.payload).includes("isAxiosError")) {
+        return { ...state };
+      }
       return {
         ...state,
         ...action.payload,
+      };
+    }
+    case StatsTypes.RESET_SEARCH: {
+      return {
+        loading: false,
       };
     }
     case StatsTypes.UPDATE_LOADING: {
