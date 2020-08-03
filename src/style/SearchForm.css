@@ -21,7 +21,7 @@ button {
 select {
   padding: 0%;
   height: 100%;
-  width: 5vw;
+  width: 6vw;
   font-size: 1rem;
   border-color: transparent;
 }
@@ -67,7 +67,7 @@ input:focus {
     width: 20vw;
   }
   form {
-    width: 75vw;
+    width: 45vw;
   }
   select {
     width: 12vw;

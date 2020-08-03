@@ -1,0 +1,76 @@
+.leftSidePanel {
+  height: 55vh;
+  width: 0;
+  position: fixed;
+  top: 25vh;
+  left: 0;
+  background-color: #3277a3;
+  border: 2px solid gold;
+  border-left: transparent;
+  overflow: hidden;
+  transition: 0.5s;
+  display: grid;
+  place-items: center;
+}
+
+.leftSidePanel p {
+  text-decoration: none;
+  color: white;
+}
+
+.leftSidePanel p:hover {
+  color: black;
+  cursor: default;
+}
+
+.rankedIcon {
+  width: 30%;
+}
+
+.profileIcon {
+  position: relative;
+}
+
+.profileIconImage {
+  width: 30%;
+  border: 2px solid gold;
+}
+
+.level {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: -14px;
+  margin-left: -5%;
+  box-sizing: border-box;
+  background-size: 100%;
+  line-height: 17px;
+  text-align: center;
+  background-color: #202020;
+  border: 0.5px solid gold;
+  border-radius: 15%;
+  font-weight: lighter;
+  font-size: x-small;
+  color: gold;
+  width: 10%;
+}
+
+p {
+  letter-spacing: 0.1em;
+  font-weight: bold;
+}
+
+.lightText {
+  opacity: 0.8;
+  font-weight: lighter;
+  font-size: smaller;
+}
+
+@media screen and (max-height: 450px) {
+  .leftSidePanel {
+    padding-top: 15px;
+  }
+  .leftSidePanel a {
+    font-size: 18px;
+  }
+}
