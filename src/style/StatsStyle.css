@@ -11,6 +11,8 @@
   transition: 0.5s;
   display: grid;
   place-items: center;
+  border-bottom-right-radius: 50px;
+  border-top-right-radius: 50px;
 }
 
 .leftSidePanel p {
@@ -18,9 +20,25 @@
   color: white;
 }
 
-.leftSidePanel p:hover {
-  color: black;
-  cursor: default;
+.rightSidePanel {
+  height: 55vh;
+  width: 0;
+  position: fixed;
+  top: 25vh;
+  right: 0;
+  background-color: #3277a3;
+  border: 2px solid gold;
+  border-right: transparent;
+  overflow: hidden;
+  transition: 0.5s;
+  display: grid;
+  place-items: center;
+  border-bottom-left-radius: 50px;
+  border-top-left-radius: 50px;
+}
+
+.rightSidePanel p {
+  text-decoration: none;
 }
 
 .rankedIcon {
@@ -34,6 +52,7 @@
 .profileIconImage {
   width: 30%;
   border: 2px solid gold;
+  border-radius: 10px;
 }
 
 .level {
@@ -41,29 +60,41 @@
   top: 100%;
   left: 50%;
   margin-top: -14px;
-  margin-left: -5%;
+  margin-left: -6%;
   box-sizing: border-box;
   background-size: 100%;
   line-height: 17px;
   text-align: center;
   background-color: #202020;
   border: 0.5px solid gold;
-  border-radius: 15%;
-  font-weight: lighter;
-  font-size: x-small;
+  border-radius: 5px;
+  font-size: smaller;
   color: gold;
-  width: 10%;
+  width: 12%;
 }
 
 p {
   letter-spacing: 0.1em;
   font-weight: bold;
+  color: white;
 }
 
 .lightText {
   opacity: 0.8;
   font-weight: lighter;
   font-size: smaller;
+}
+
+.searchContainer {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  transition: 0.5s;
+  margin-left: 35%;
+  width: 30vw;
+}
+.searchImage {
+  width: 20vw;
 }
 
 @media screen and (max-height: 450px) {

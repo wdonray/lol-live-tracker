@@ -4,7 +4,7 @@
 }
 
 .App-header {
-  background-color: #3277A3;
+  background-color: #3277a3;
   min-height: 5vh;
   display: flex;
   flex-direction: row;
@@ -43,18 +43,19 @@ a:after {
 
 a:before {
   height: 0%;
-  border-top: 2px solid #7DB2D4;
+  border-top: 2px solid #7db2d4;
   bottom: 0;
   left: 0;
   transition: height 0.3s ease;
 }
 a:after {
   height: 100%;
-  border-bottom: 2px solid #7DB2D4;
+  border-bottom: 2px solid #7db2d4;
   bottom: 0;
   left: 0;
   transition: transform 0.2s ease;
 }
+
 a:hover:before {
   height: 100%;
   transform: scale(1.08);
@@ -64,6 +65,10 @@ a:hover:before {
 a:hover:after {
   transform: scale(1.08);
   transition: transform 0.4s ease;
+}
+
+a:hover {
+  color: gold;
 }
 
 .App-inputContainer {
@@ -103,23 +108,47 @@ select {
 }
 
 @-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;} 
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;} 
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 @keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 @media only screen and (max-width: 600px) {

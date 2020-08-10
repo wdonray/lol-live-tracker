@@ -18,6 +18,11 @@ button {
   font-size: 1rem;
 }
 
+button:hover {
+  color: gold;
+  cursor: pointer;
+}
+
 select {
   padding: 0%;
   height: 100%;
@@ -31,9 +36,6 @@ select:focus {
 }
 
 input {
-  /* width: 30vw;
-    padding: 12px 30px;
-    display: inline-block; */
   flex-grow: 2;
   border: none;
   font-size: 1rem;
@@ -61,6 +63,7 @@ input:focus {
   border-top-color: white;
   animation: loader 0.6s linear infinite;
 }
+
 @media only screen and (max-width: 600px) {
   input {
     font-size: 0.8rem;

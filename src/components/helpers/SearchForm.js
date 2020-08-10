@@ -46,6 +46,7 @@ function SearchFrom({
             history.push("/stats");
             updateLoading(false);
             if (data.payload instanceof Error) {
+              //If an account has no matches it will show error
               snackBar();
             }
           });

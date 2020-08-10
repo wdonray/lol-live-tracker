@@ -4,6 +4,7 @@ import "../style/StatsStyle.css";
 import LoadingSpinner from "./helpers/LoadingSpinner";
 import { addStyle, addStyleArray } from "../util/addStyle";
 import capitalize from "../util/capitalize";
+import search from "../assets/search.png";
 
 let mapState = (store) => {
   return {
@@ -12,8 +13,8 @@ let mapState = (store) => {
   };
 };
 
-function Stats({ regionState, statsState }) {
-  let [leftSidePanel, toggleSidePanel] = React.useState(false);
+function Stats({ statsState }) {
+  let [sidePanel, toggleSidePanel] = React.useState(false);
 
   let togglePanelOn = () => {
     addStyleArray("leftSidePanel", [
@@ -21,10 +22,19 @@ function Stats({ regionState, statsState }) {
       { key: "border", value: "2px solid gold" },
       { key: "borderLeft", value: "transparent" },
     ]);
-    addStyleArray("body", [
+    // addStyleArray("rightSidePanel", [
+    //   { key: "width", value: "250px" },
+    //   { key: "border", value: "2px solid gold" },
+    //   { key: "borderRight", value: "transparent" },
+    // ]);
+    addStyleArray("leftBody", [
       { key: "opacity", value: "1" },
       { key: "transition", value: "1s" },
     ]);
+    // addStyleArray("rightBody", [
+    //   { key: "opacity", value: "1" },
+    //   { key: "transition", value: "1s" },
+    // ]);
     addStyle("pageLoader", "opacity", "0");
     addStyle("pageLoader2", "opacity", "0");
     toggleSidePanel(true);
@@ -35,17 +45,25 @@ function Stats({ regionState, statsState }) {
       { key: "width", value: "0" },
       { key: "border", value: "0px solid transparent" },
     ]);
-    addStyleArray("body", [
+    // addStyleArray("rightSidePanel", [
+    //   { key: "width", value: "0" },
+    //   { key: "border", value: "0px solid transparent" },
+    // ]);
+    addStyleArray("leftBody", [
       { key: "opacity", value: "0" },
       { key: "transition", value: "0.1s" },
     ]);
+    // addStyleArray("rightBody", [
+    //   { key: "opacity", value: "0" },
+    //   { key: "transition", value: "0.1s" },
+    // ]);
     addStyle("pageLoader", "opacity", "1");
     addStyle("pageLoader2", "opacity", "1");
     toggleSidePanel(false);
   };
 
   React.useEffect(() => {
-    if (!leftSidePanel) {
+    if (!sidePanel) {
       togglePanelOn();
     }
 
@@ -75,7 +93,7 @@ function Stats({ regionState, statsState }) {
               />
             ) : null}
             {statsState.summonerLevel ? (
-              <span className={'level'}>{statsState.summonerLevel}</span>
+              <span className={"level"}>{statsState.summonerLevel}</span>
             ) : null}
           </div>
           <p>Name: {statsState.name}</p>
@@ -98,10 +116,10 @@ function Stats({ regionState, statsState }) {
           )}
           <p className={"lightText"}>
             {statsState.queueType
-              ? capitalize(statsState.queueType.toLowerCase()).replaceAll(
-                  "_",
-                  " "
-                )
+              ? capitalize(statsState.queueType.toLowerCase())
+                  .replaceAll("_", " ")
+                  .replace("sr", "")
+                  .replace("5x5", "")
               : null}
           </p>
           <p>Rank: {checkIfUnranked()}</p>
@@ -124,19 +142,44 @@ function Stats({ regionState, statsState }) {
         </div>
       );
     }
-    return "Search For Summoner";
+    return null;
   };
+
+  // let RightSidePanel = () => {
+  //   if (statsState.id) {
+  //     return <p>Right</p>;
+  //   }
+  //   return null;
+  // };
 
   return (
     <div>
       <LoadingSpinner />
-      <div style={{ color: "white" }}>
-        <div id="leftSidePanel" className="leftSidePanel">
-          <div id="body">
-            <LeftSidePanel />
-          </div>
+      <div
+        style={{ opacity: statsState.id || statsState.loading ? 0 : 1 }}
+        className={"searchContainer"}
+      >
+        <img alt="404" src={search} className={"searchImage"} />
+        <p>Please search for a summoner</p>
+      </div>
+      <div
+        style={{ opacity: statsState.id ? 1 : 0 }}
+        id="leftSidePanel"
+        className="leftSidePanel"
+      >
+        <div id="leftBody">
+          <LeftSidePanel />
         </div>
       </div>
+      {/* <div
+        style={{ opacity: statsState.id ? 1 : 0 }}
+        id="rightSidePanel"
+        className="rightSidePanel"
+      >
+        <div id="rightBody">
+          <RightSidePanel />
+        </div>
+      </div> */}
     </div>
   );
 }
