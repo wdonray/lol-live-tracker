@@ -5,6 +5,7 @@ import LoadingSpinner from "./helpers/LoadingSpinner";
 import { addStyle, addStyleArray } from "../util/addStyle";
 import capitalize from "../util/capitalize";
 import search from "../assets/search.png";
+import { gameDate, gameLength } from "../util/unixTimeConverter";
 
 let mapState = (store) => {
   return {
@@ -22,21 +23,19 @@ function Stats({ statsState }) {
       { key: "border", value: "2px solid gold" },
       { key: "borderLeft", value: "transparent" },
     ]);
-    // addStyleArray("rightSidePanel", [
-    //   { key: "width", value: "250px" },
-    //   { key: "border", value: "2px solid gold" },
-    //   { key: "borderRight", value: "transparent" },
-    // ]);
+    addStyleArray("rightSidePanel", [
+      { key: "width", value: "250px" },
+      { key: "border", value: "2px solid gold" },
+      { key: "borderRight", value: "transparent" },
+    ]);
     addStyleArray("leftBody", [
       { key: "opacity", value: "1" },
       { key: "transition", value: "1s" },
     ]);
-    // addStyleArray("rightBody", [
-    //   { key: "opacity", value: "1" },
-    //   { key: "transition", value: "1s" },
-    // ]);
-    addStyle("pageLoader", "opacity", "0");
-    addStyle("pageLoader2", "opacity", "0");
+    addStyleArray("rightBody", [
+      { key: "opacity", value: "1" },
+      { key: "transition", value: "1s" },
+    ]);
     toggleSidePanel(true);
   };
 
@@ -45,20 +44,18 @@ function Stats({ statsState }) {
       { key: "width", value: "0" },
       { key: "border", value: "0px solid transparent" },
     ]);
-    // addStyleArray("rightSidePanel", [
-    //   { key: "width", value: "0" },
-    //   { key: "border", value: "0px solid transparent" },
-    // ]);
+    addStyleArray("rightSidePanel", [
+      { key: "width", value: "0" },
+      { key: "border", value: "0px solid transparent" },
+    ]);
     addStyleArray("leftBody", [
       { key: "opacity", value: "0" },
       { key: "transition", value: "0.1s" },
     ]);
-    // addStyleArray("rightBody", [
-    //   { key: "opacity", value: "0" },
-    //   { key: "transition", value: "0.1s" },
-    // ]);
-    addStyle("pageLoader", "opacity", "1");
-    addStyle("pageLoader2", "opacity", "1");
+    addStyleArray("rightBody", [
+      { key: "opacity", value: "0" },
+      { key: "transition", value: "0.1s" },
+    ]);
     toggleSidePanel(false);
   };
 
@@ -145,22 +142,36 @@ function Stats({ statsState }) {
     return null;
   };
 
-  // let RightSidePanel = () => {
-  //   if (statsState.id) {
-  //     return <p>Right</p>;
-  //   }
-  //   return null;
-  // };
-
+  let RightSidePanel = () => {
+    if (statsState.id && statsState.matches) {
+    return <p>{`Match Count: ${statsState.endIndex}`}</p>;
+    }
+    return null;
+  };
   return (
     <div>
-      <LoadingSpinner />
+      {statsState.loading ? <LoadingSpinner /> : null}
+      {statsState.id || statsState.loading ? null : (
+        <div
+          style={{ opacity: statsState.id || statsState.loading ? 0 : 1 }}
+          className={"searchContainer"}
+        >
+          <img alt="404" src={search} className={"searchImage"} />
+          <p>Please search for a summoner</p>
+        </div>
+      )}
+
       <div
-        style={{ opacity: statsState.id || statsState.loading ? 0 : 1 }}
-        className={"searchContainer"}
+        style={{ opacity: statsState.matches ? 1 : 0 }}
+        className={"matchCardContainer"}
       >
-        <img alt="404" src={search} className={"searchImage"} />
-        <p>Please search for a summoner</p>
+        {statsState.matches
+          ? statsState.matches.map((match) => (
+              <div key={match.gameId} className={"matchCard"}>
+                {match.gameId}
+              </div>
+            ))
+          : null}
       </div>
       <div
         style={{ opacity: statsState.id ? 1 : 0 }}
@@ -171,7 +182,7 @@ function Stats({ statsState }) {
           <LeftSidePanel />
         </div>
       </div>
-      {/* <div
+      <div
         style={{ opacity: statsState.id ? 1 : 0 }}
         id="rightSidePanel"
         className="rightSidePanel"
@@ -179,7 +190,7 @@ function Stats({ statsState }) {
         <div id="rightBody">
           <RightSidePanel />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

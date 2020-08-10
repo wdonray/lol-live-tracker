@@ -97,6 +97,21 @@ p {
   width: 20vw;
 }
 
+.matchCardContainer {
+  margin: 0 auto;
+  width: 50%;
+  height: 100vh;
+
+  display: grid;
+}
+
+.matchCard {
+  width: 100%;
+  background-color: gold;
+  height: 10vh;
+  flex-grow: 1;
+}
+
 @media screen and (max-height: 450px) {
   .leftSidePanel {
     padding-top: 15px;

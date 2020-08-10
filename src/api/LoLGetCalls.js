@@ -28,7 +28,7 @@ export let getMatchHistory = async (region, encryptedAccountId, endIndex) => {
     const { data } = await axios.post(endPoints.getMatchHistory, {
       region: region,
       encryptedAccountId: encryptedAccountId,
-      count: endIndex,
+      endIndex: endIndex,
     });
     return data;
   } catch (err) {

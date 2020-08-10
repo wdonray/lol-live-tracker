@@ -2,6 +2,7 @@ import { StatsTypes } from "../constants/actionTypes";
 
 const initState = {
   loading: false,
+  endIndex: 5
 };
 
 export default (state = initState, action) => {
@@ -20,6 +21,7 @@ export default (state = initState, action) => {
     case StatsTypes.RESET_SEARCH: {
       return {
         loading: false,
+        endIndex: 5
       };
     }
     case StatsTypes.UPDATE_LOADING: {

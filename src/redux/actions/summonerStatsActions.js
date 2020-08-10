@@ -24,7 +24,7 @@ export const getSumStats = (region, encryptedSummonerId) => {
 export const getMatches = (region, encryptedSummonerId, endIndex) => {
   return (dispatch) => {
     return getMatchHistory(region, encryptedSummonerId, endIndex).then((data) =>
-      dispatch({ type: StatsTypes.UPDATE_SUMMONER, payload: data })
+      dispatch({ type: StatsTypes.UPDATE_SUMMONER, payload: { matches: data } })
     );
   };
 };
@@ -38,7 +38,7 @@ export const updateLoading = (value) => {
 
 export const searchSummoner = (region, summonerName, endIndex) => {
   return (dispatch, getState) => {
-    dispatch({ type: StatsTypes.RESET_SEARCH})
+    dispatch({ type: StatsTypes.RESET_SEARCH });
     dispatch({ type: StatsTypes.UPDATE_LOADING, payload: true });
     return dispatch(getSumName(region, summonerName)).then(() => {
       const encryptedSummonerId = getState().stats.accountId;
