@@ -101,7 +101,6 @@ p {
   margin: 0 auto;
   width: 50%;
   height: 100vh;
-
   display: grid;
 }
 
@@ -110,6 +109,10 @@ p {
   background-color: gold;
   height: 10vh;
   flex-grow: 1;
+}
+
+.showMore {
+  
 }
 
 @media screen and (max-height: 450px) {

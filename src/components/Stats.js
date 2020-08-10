@@ -6,6 +6,10 @@ import { addStyle, addStyleArray } from "../util/addStyle";
 import capitalize from "../util/capitalize";
 import search from "../assets/search.png";
 import { gameDate, gameLength } from "../util/unixTimeConverter";
+import {
+  showMoreMatches,
+  showMore,
+} from "../redux/actions/summonerStatsActions";
 
 let mapState = (store) => {
   return {
@@ -14,7 +18,14 @@ let mapState = (store) => {
   };
 };
 
-function Stats({ statsState }) {
+let mapDispatch = (dispatch) => {
+  return {
+    showMore: (value) => dispatch(showMore(value)),
+    showMoreMatches: (endIndex) => dispatch(showMoreMatches(endIndex)),
+  };
+};
+
+function Stats({ statsState, showMore, showMoreMatches }) {
   let [sidePanel, toggleSidePanel] = React.useState(false);
 
   let togglePanelOn = () => {
@@ -144,10 +155,11 @@ function Stats({ statsState }) {
 
   let RightSidePanel = () => {
     if (statsState.id && statsState.matches) {
-    return <p>{`Match Count: ${statsState.endIndex}`}</p>;
+      return <p>{`Match Count: ${statsState.endIndex}`}</p>;
     }
     return null;
   };
+
   return (
     <div>
       {statsState.loading ? <LoadingSpinner /> : null}
@@ -172,6 +184,16 @@ function Stats({ statsState }) {
               </div>
             ))
           : null}
+        <button
+          className="showMore"
+          disabled={statsState.maxMatches}
+          onClick={() => {
+            showMore(statsState.endIndex + 5);
+            showMoreMatches(statsState.endIndex + 5);
+          }}
+        >
+          {statsState.maxMatches ? "End of Match History" : "Show More"}
+        </button>
       </div>
       <div
         style={{ opacity: statsState.id ? 1 : 0 }}
@@ -195,4 +217,4 @@ function Stats({ statsState }) {
   );
 }
 
-export default connect(mapState)(Stats);
+export default connect(mapState, mapDispatch)(Stats);

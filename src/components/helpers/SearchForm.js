@@ -20,8 +20,8 @@ let mapState = (store) => {
 let mapDispatch = (dispatch) => {
   return {
     changeRegion: (value) => dispatch(changeRegion(value)),
-    searchSummoner: (region, summonerName, endIndex) =>
-      dispatch(searchSummoner(region, summonerName, endIndex)),
+    searchSummoner: (region, summonerName) =>
+      dispatch(searchSummoner(region, summonerName)),
     updateLoading: (value) => dispatch(updateLoading(value)),
   };
 };
@@ -42,7 +42,7 @@ function SearchFrom({
       onSubmit={(event) => {
         event.preventDefault();
         if (!statsState.loading) {
-          searchSummoner(regionState.region, summonerName, 5).then((data) => {
+          searchSummoner(regionState.region, summonerName).then((data) => {
             history.push("/stats");
             updateLoading(false);
             if (data.payload instanceof Error) {

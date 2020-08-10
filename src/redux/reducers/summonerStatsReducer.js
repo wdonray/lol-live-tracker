@@ -2,7 +2,8 @@ import { StatsTypes } from "../constants/actionTypes";
 
 const initState = {
   loading: false,
-  endIndex: 5
+  endIndex: 5,
+  maxMatches: false
 };
 
 export default (state = initState, action) => {
@@ -21,7 +22,20 @@ export default (state = initState, action) => {
     case StatsTypes.RESET_SEARCH: {
       return {
         loading: false,
-        endIndex: 5
+        endIndex: 5,
+        maxMatches: false
+      };
+    }
+    case StatsTypes.MAX_MATCHES: {
+      return {
+        ...state,
+        maxMatches: action.payload
+      }
+    }
+    case StatsTypes.SHOW_MORE: {
+      return {
+        ...state,
+        endIndex: action.payload,
       };
     }
     case StatsTypes.UPDATE_LOADING: {
