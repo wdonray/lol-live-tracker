@@ -1,12 +1,14 @@
 import { combineReducers } from "redux";
 
-import regionReducer from "../reducers/regionReducer";
-import statsReducer from "../reducers/summonerStatsReducer"
+import regionReducer from "./regionReducer";
+import statsReducer from "./summonerStatsReducer";
+import ddragonReducer from "./ddragonReducer";
 
 const rootReducer = () =>
   combineReducers({
     region: regionReducer,
-    stats: statsReducer
+    stats: statsReducer,
+    ddragon: ddragonReducer,
   });
 
 export default rootReducer;

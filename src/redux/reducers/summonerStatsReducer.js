@@ -2,7 +2,7 @@ import { StatsTypes } from "../constants/actionTypes";
 
 const initState = {
   loading: false,
-  endIndex: 5,
+  endIndex: 10,
   beginIndex: 0,
   maxMatches: false,
 };
@@ -21,11 +21,26 @@ export default (state = initState, action) => {
       };
     }
     case StatsTypes.UPDATE_MATCHES: {
+      let updatedMatches = state.matches
+        ? state.matches.concat(action.payload)
+        : action.payload;
+      let updatedWins = state.currentMatchesWins ? state.currentMatchesWins : 0;
+      action.payload.forEach((match) => {
+        let currentSearched = match.participantIdentities.find(
+          (x) => x.player.accountId === state.accountId
+        );
+        let currentParticipant = match.participants.find(
+          (x) => x.participantId === currentSearched.participantId
+        );
+        if (currentParticipant.stats.win) {
+          updatedWins += 1;
+        }
+      });
       return {
         ...state,
-        matches: state.matches
-          ? state.matches.concat(action.payload)
-          : action.payload,
+        matches: updatedMatches,
+        currentMatchesWins: updatedWins,
+        updatingMatches: false
       };
     }
     case StatsTypes.RESET_SEARCH: {
@@ -44,6 +59,7 @@ export default (state = initState, action) => {
         ...state,
         endIndex: action.payload,
         beginIndex: action.payload - 5,
+        updatingMatches: true
       };
     }
     case StatsTypes.UPDATE_LOADING: {

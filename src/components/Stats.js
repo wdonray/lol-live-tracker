@@ -7,14 +7,22 @@ import capitalize from "../util/capitalize";
 import search from "../assets/search.png";
 import { gameDate, gameLength } from "../util/unixTimeConverter";
 import {
+  formatGameMode,
+  getChampionName,
+  getQueueType,
+} from "../util/formatData";
+import {
   showMoreMatches,
   showMore,
 } from "../redux/actions/summonerStatsActions";
+import ProgressBar from "./helpers/ProgressBar";
+import axios from "axios";
 
 let mapState = (store) => {
   return {
     regionState: store.region,
     statsState: store.stats,
+    ddragonState: store.ddragon,
   };
 };
 
@@ -26,7 +34,7 @@ let mapDispatch = (dispatch) => {
   };
 };
 
-function Stats({ statsState, showMore, showMoreMatches }) {
+function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
   let [sidePanel, toggleSidePanel] = React.useState(false);
 
   let togglePanelOn = () => {
@@ -79,7 +87,7 @@ function Stats({ statsState, showMore, showMoreMatches }) {
     if (statsState.loading) {
       togglePanelOff();
     }
-  });
+  }, [statsState, sidePanel]);
 
   let checkIfUnranked = () => {
     if (statsState.tier) {
@@ -98,7 +106,7 @@ function Stats({ statsState, showMore, showMoreMatches }) {
               <img
                 className={"profileIconImage"}
                 alt={"Icon not found"}
-                src={`http://ddragon.leagueoflegends.com/cdn/10.15.1/img/profileicon/${statsState.profileIconId}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${ddragonState.version}/img/profileicon/${statsState.profileIconId}.png`}
               />
             ) : null}
             {statsState.summonerLevel ? (
@@ -137,7 +145,7 @@ function Stats({ statsState, showMore, showMoreMatches }) {
           </p>
           <p>
             {statsState.wins && statsState.losses
-              ? `Wins/Losses: ${statsState.wins} / ${statsState.losses}`
+              ? `Wins: ${statsState.wins} / Losses: ${statsState.losses}`
               : null}
           </p>
           <p>
@@ -156,19 +164,82 @@ function Stats({ statsState, showMore, showMoreMatches }) {
 
   let RightSidePanel = () => {
     if (statsState.id && statsState.matches) {
-      return <p>{`Match Count: ${statsState.endIndex}`}</p>;
+      if (statsState.updatingMatches) {
+        return <p>Loading...</p>;
+      }
+      return (
+        <div>
+          <h3>Shown Matches Stats</h3>
+          <p>{`Matches: ${statsState.endIndex}`}</p>
+          <p>{`Wins: ${statsState.currentMatchesWins} / Losses: ${
+            statsState.endIndex - statsState.currentMatchesWins
+          }`}</p>
+          <ProgressBar
+            bgcolor={"#4493c6"}
+            progress={Math.round(
+              (statsState.currentMatchesWins /
+                (statsState.currentMatchesWins +
+                  (statsState.endIndex - statsState.currentMatchesWins))) *
+                100
+            )}
+          />
+        </div>
+      );
     }
     return null;
   };
 
-  let MatchCard = ({ match }) => (
-    <div className={"matchCard"}>
-      <div>
-        {match.gameMode}
-        {gameDate(match.gameCreation)}
+  let MatchCard = ({ match }) => {
+    let currentSearched = match.participantIdentities.find(
+      (x) => x.player.accountId === statsState.accountId
+    );
+    let currentParticipant = match.participants.find(
+      (x) => x.participantId === currentSearched.participantId
+    );
+    return (
+      <div
+        className={"matchCard"}
+        style={{
+          backgroundColor: currentParticipant.stats.win ? "#4493c6" : "#ff726f",
+        }}
+      >
+        <div className={"matchCard-Item"}>
+          <div style={{ fontWeight: "bold" }}>
+            {currentParticipant.stats.win ? "Victory" : "Defeat"}
+          </div>
+          <div style={{ fontSize: "smaller" }}>
+            {getQueueType(ddragonState.queues, match.queueId, match.gameMode)}
+          </div>
+          <div className="bar" />
+          <div>{gameDate(match.gameCreation)}</div>
+          <div>{gameLength(match.gameDuration)}</div>
+        </div>
+        <div className={"matchCard-Item"}>
+          <div className={"matchCard-ChampSection"}>
+            <img
+              className={"matchCard-ChampIcon"}
+              alt={"Icon not found"}
+              src={`http://ddragon.leagueoflegends.com/cdn/${
+                ddragonState.version
+              }/img/champion/${getChampionName(
+                ddragonState.champs,
+                currentParticipant.championId
+              )}.png`}
+            />
+            <span className={"matchCard-ChampName"}>
+              {getChampionName(
+                ddragonState.champs,
+                currentParticipant.championId
+              )}
+            </span>
+          </div>
+        </div>
+        <div className={"matchCard-Item"}>Score</div>
+        <div className={"matchCard-Item"}>Build</div>
+        <div className={"matchCard-Item"}>Team</div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div>

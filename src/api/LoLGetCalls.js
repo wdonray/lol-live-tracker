@@ -65,3 +65,36 @@ export let getSummonerStats = async (region, encryptedSummonerId) => {
     return err;
   }
 };
+
+export let getVersions = async () => {
+  try {
+    const { data } = await axios.get(
+      "https://ddragon.leagueoflegends.com/api/versions.json"
+    );
+    return data[0];
+  } catch (err) {
+    return err;
+  }
+};
+
+export let getChamps = async (version) => {
+  try {
+    const { data } = await axios.get(
+      `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
+    );
+    return data.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export let getQueues = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://static.developer.riotgames.com/docs/lol/queues.json"
+    );
+    return data;
+  } catch (err) {
+    return err;
+  }
+};

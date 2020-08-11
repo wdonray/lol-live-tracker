@@ -34,7 +34,7 @@ export const getMatches = (
       beginIndex,
       endIndex
     ).then((data) => {
-      console.log({ data, beginIndex, endIndex });
+
       if (Array.isArray(data) && data.length !== 0) {
         return dispatch({
           type: StatsTypes.UPDATE_MATCHES,
@@ -63,6 +63,7 @@ export const showMore = (value) => {
     payload: value,
   };
 };
+
 
 export const showMoreMatches = (beginIndex, endIndex) => {
   return (dispatch, getState) => {

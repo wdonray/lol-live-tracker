@@ -1,0 +1,21 @@
+.container {
+    height: 20px;
+    width: 100%;
+    background-color: #ff726f;
+    border-radius: 50px;
+    margin: 0 auto;
+}
+
+.filler {
+    height: 100%;
+    border-radius: inherit;
+    text-align: right;
+    transition: 'width 1s ease-in-out',
+}
+
+.label {
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black; 
+}

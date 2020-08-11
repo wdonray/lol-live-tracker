@@ -5,6 +5,8 @@ import Stats from "./Stats";
 import LiveGame from "./LiveGame";
 import { Switch, Route, Link } from "react-router-dom";
 import SearchForm from "./helpers/SearchForm";
+import { updateDDragon } from "../redux/actions/ddragonActions";
+import { connect } from "react-redux";
 
 export let snackBar = () => {
   let x = document.getElementById("snackbar");
@@ -14,7 +16,22 @@ export let snackBar = () => {
   }, 3000);
 };
 
-function App() {
+let mapState = (store) => {
+  return {
+    ddragonState: store.ddragon,
+  };
+};
+
+let mapDispatch = (dispatch) => {
+  return {
+    updateDDragon: () => dispatch(updateDDragon()),
+  };
+};
+
+function App({ updateDDragon }) {
+  React.useEffect(() => {
+    updateDDragon();
+  }, []);
 
   return (
     <div className="App">
@@ -46,4 +63,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(mapState, mapDispatch)(App);
