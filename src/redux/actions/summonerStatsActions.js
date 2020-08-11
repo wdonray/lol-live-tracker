@@ -21,24 +21,32 @@ export const getSumStats = (region, encryptedSummonerId) => {
   };
 };
 
-export const getMatches = (region, encryptedSummonerId, endIndex) => {
+export const getMatches = (
+  region,
+  encryptedSummonerId,
+  beginIndex,
+  endIndex
+) => {
   return (dispatch) => {
-    return getMatchHistory(region, encryptedSummonerId, endIndex).then(
-      (data) => {
-        console.log({data, endIndex});
-        if (Array.isArray(data) && data.length !== 0) {
-          return dispatch({
-            type: StatsTypes.UPDATE_SUMMONER,
-            payload: { matches: data },
-          });
-        } else {
-          return dispatch({
-            type: StatsTypes.MAX_MATCHES,
-            payload: true,
-          });
-        }
+    return getMatchHistory(
+      region,
+      encryptedSummonerId,
+      beginIndex,
+      endIndex
+    ).then((data) => {
+      console.log({ data, beginIndex, endIndex });
+      if (Array.isArray(data) && data.length !== 0) {
+        return dispatch({
+          type: StatsTypes.UPDATE_MATCHES,
+          payload: data,
+        });
+      } else {
+        return dispatch({
+          type: StatsTypes.MAX_MATCHES,
+          payload: true,
+        });
       }
-    );
+    });
   };
 };
 
@@ -56,11 +64,13 @@ export const showMore = (value) => {
   };
 };
 
-export const showMoreMatches = (endIndex) => {
+export const showMoreMatches = (beginIndex, endIndex) => {
   return (dispatch, getState) => {
     const encryptedSummonerId = getState().stats.accountId;
     const region = getState().region.region;
-    return dispatch(getMatches(region, encryptedSummonerId, endIndex));
+    return dispatch(
+      getMatches(region, encryptedSummonerId, beginIndex, endIndex)
+    );
   };
 };
 
@@ -72,8 +82,11 @@ export const searchSummoner = (region, summonerName) => {
       const encryptedSummonerId = getState().stats.accountId;
       const id = getState().stats.id;
       const endIndex = getState().stats.endIndex;
+      const beginIndex = getState().stats.beginIndex;
       return dispatch(getSumStats(region, id)).then(() => {
-        return dispatch(getMatches(region, encryptedSummonerId, endIndex));
+        return dispatch(
+          getMatches(region, encryptedSummonerId, beginIndex, endIndex)
+        );
       });
     });
   };

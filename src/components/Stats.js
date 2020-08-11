@@ -21,7 +21,8 @@ let mapState = (store) => {
 let mapDispatch = (dispatch) => {
   return {
     showMore: (value) => dispatch(showMore(value)),
-    showMoreMatches: (endIndex) => dispatch(showMoreMatches(endIndex)),
+    showMoreMatches: (beginIndex, endIndex) =>
+      dispatch(showMoreMatches(beginIndex, endIndex)),
   };
 };
 
@@ -160,6 +161,15 @@ function Stats({ statsState, showMore, showMoreMatches }) {
     return null;
   };
 
+  let MatchCard = ({ match }) => (
+    <div className={"matchCard"}>
+      <div>
+        {match.gameMode}
+        {gameDate(match.gameCreation)}
+      </div>
+    </div>
+  );
+
   return (
     <div>
       {statsState.loading ? <LoadingSpinner /> : null}
@@ -179,9 +189,7 @@ function Stats({ statsState, showMore, showMoreMatches }) {
       >
         {statsState.matches
           ? statsState.matches.map((match) => (
-              <div key={match.gameId} className={"matchCard"}>
-                {match.gameId}
-              </div>
+              <MatchCard match={match} key={match.gameId} />
             ))
           : null}
         <button
@@ -189,7 +197,7 @@ function Stats({ statsState, showMore, showMoreMatches }) {
           disabled={statsState.maxMatches}
           onClick={() => {
             showMore(statsState.endIndex + 5);
-            showMoreMatches(statsState.endIndex + 5);
+            showMoreMatches(statsState.beginIndex + 5, statsState.endIndex + 5);
           }}
         >
           {statsState.maxMatches ? "End of Match History" : "Show More"}

@@ -3,7 +3,8 @@ import { StatsTypes } from "../constants/actionTypes";
 const initState = {
   loading: false,
   endIndex: 5,
-  maxMatches: false
+  beginIndex: 0,
+  maxMatches: false,
 };
 
 export default (state = initState, action) => {
@@ -19,23 +20,30 @@ export default (state = initState, action) => {
         ...action.payload,
       };
     }
+    case StatsTypes.UPDATE_MATCHES: {
+      return {
+        ...state,
+        matches: state.matches
+          ? state.matches.concat(action.payload)
+          : action.payload,
+      };
+    }
     case StatsTypes.RESET_SEARCH: {
       return {
-        loading: false,
-        endIndex: 5,
-        maxMatches: false
+        ...initState,
       };
     }
     case StatsTypes.MAX_MATCHES: {
       return {
         ...state,
-        maxMatches: action.payload
-      }
+        maxMatches: action.payload,
+      };
     }
     case StatsTypes.SHOW_MORE: {
       return {
         ...state,
         endIndex: action.payload,
+        beginIndex: action.payload - 5,
       };
     }
     case StatsTypes.UPDATE_LOADING: {
