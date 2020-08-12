@@ -2,12 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import "../style/StatsStyle.css";
 import LoadingSpinner from "./helpers/LoadingSpinner";
-import { addStyle, addStyleArray } from "../util/addStyle";
+import { addStyleArray } from "../util/addStyle";
 import capitalize from "../util/capitalize";
 import search from "../assets/search.png";
 import { gameDate, gameLength } from "../util/unixTimeConverter";
 import {
-  formatGameMode,
   getChampionName,
   getQueueType,
 } from "../util/formatData";
@@ -16,7 +15,6 @@ import {
   showMore,
 } from "../redux/actions/summonerStatsActions";
 import ProgressBar from "./helpers/ProgressBar";
-import axios from "axios";
 
 let mapState = (store) => {
   return {

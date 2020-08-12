@@ -6,7 +6,7 @@ function Home() {
   return (
     <div className={"centerContainer"}>
       <div>
-        <h1>LOL Live Tracker</h1>
+        <h1>League of Legends Live Stats</h1>
         <p onClick={() => window.open("https://www.donrayxwilliams.com/")}>
           Created by Donray Williams
         </p>

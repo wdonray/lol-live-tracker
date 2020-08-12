@@ -80,7 +80,7 @@ export let getVersions = async () => {
 export let getChamps = async (version) => {
   try {
     const { data } = await axios.get(
-      `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
+      `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
     );
     return data.data;
   } catch (err) {
@@ -91,7 +91,7 @@ export let getChamps = async (version) => {
 export let getQueues = async () => {
   try {
     const { data } = await axios.get(
-      "http://static.developer.riotgames.com/docs/lol/queues.json"
+      "https://static.developer.riotgames.com/docs/lol/queues.json"
     );
     return data;
   } catch (err) {
