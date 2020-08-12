@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import "../style/StatsStyle.css";
 import LoadingSpinner from "./helpers/LoadingSpinner";
 import { addStyleArray } from "../util/addStyle";
-import {capitalize} from "../util/capitalize";
 import search from "../assets/search.png";
 import { gameDate, gameLength } from "../util/unixTimeConverter";
 import {
@@ -31,6 +30,12 @@ let mapDispatch = (dispatch) => {
       dispatch(showMoreMatches(beginIndex, endIndex)),
   };
 };
+
+let capitalize = (s) => {
+  if (typeof s !== "string") return "";
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
 
 function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
   let [sidePanel, toggleSidePanel] = React.useState(false);
