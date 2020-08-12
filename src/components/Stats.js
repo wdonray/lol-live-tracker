@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import "../style/StatsStyle.css";
 import LoadingSpinner from "./helpers/LoadingSpinner";
 import { addStyleArray } from "../util/addStyle";
-import capitalize from "../util/capitalize";
+import {capitalize} from "../util/capitalize";
 import search from "../assets/search.png";
 import { gameDate, gameLength } from "../util/unixTimeConverter";
 import {
