@@ -5,10 +5,7 @@ import LoadingSpinner from "./helpers/LoadingSpinner";
 import { addStyleArray } from "../util/addStyle";
 import search from "../assets/search.png";
 import { gameDate, gameLength } from "../util/unixTimeConverter";
-import {
-  getChampionName,
-  getQueueType,
-} from "../util/formatData";
+import { getChampionName, getQueueType } from "../util/formatData";
 import {
   showMoreMatches,
   showMore,
@@ -35,7 +32,6 @@ let capitalize = (s) => {
   if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
-
 
 function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
   let [sidePanel, toggleSidePanel] = React.useState(false);
@@ -173,9 +169,9 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
       return (
         <div>
           <h3>Shown Matches Stats</h3>
-          <p>{`Matches: ${statsState.endIndex}`}</p>
+          <p>{`Matches: ${statsState.matches.length}`}</p>
           <p>{`Wins: ${statsState.currentMatchesWins} / Losses: ${
-            statsState.endIndex - statsState.currentMatchesWins
+            statsState.matches.length - statsState.currentMatchesWins
           }`}</p>
           <ProgressBar
             bgcolor={"#4493c6"}
@@ -207,7 +203,12 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
         }}
       >
         <div className={"matchCard-Item"}>
-          <div style={{ fontWeight: "bold" }}>
+          <div
+            style={{
+              fontWeight: "bold",
+              color: currentParticipant.stats.win ? "#0892d0" : "#f70d1a",
+            }}
+          >
             {currentParticipant.stats.win ? "Victory" : "Defeat"}
           </div>
           <div style={{ fontSize: "smaller" }}>
@@ -218,24 +219,22 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
           <div>{gameLength(match.gameDuration)}</div>
         </div>
         <div className={"matchCard-Item"}>
-          <div className={"matchCard-ChampSection"}>
-            <img
-              className={"matchCard-ChampIcon"}
-              alt={"Icon not found"}
-              src={`http://ddragon.leagueoflegends.com/cdn/${
-                ddragonState.version
-              }/img/champion/${getChampionName(
-                ddragonState.champs,
-                currentParticipant.championId
-              )}.png`}
-            />
-            <span className={"matchCard-ChampName"}>
-              {getChampionName(
-                ddragonState.champs,
-                currentParticipant.championId
-              )}
-            </span>
-          </div>
+          <img
+            className={"matchCard-ChampIcon"}
+            alt={"Icon not found"}
+            src={`http://ddragon.leagueoflegends.com/cdn/${
+              ddragonState.version
+            }/img/champion/${getChampionName(
+              ddragonState.champs,
+              currentParticipant.championId
+            )}.png`}
+          />
+          <span className={"matchCard-ChampName"}>
+            {getChampionName(
+              ddragonState.champs,
+              currentParticipant.championId
+            )}
+          </span>
         </div>
         <div className={"matchCard-Item"}>Score</div>
         <div className={"matchCard-Item"}>Build</div>
@@ -263,15 +262,18 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
       >
         {statsState.matches
           ? statsState.matches.map((match) => (
-              <MatchCard match={match} key={match.gameId} />
+              <MatchCard
+                match={match}
+                key={match.gameId.toString().concat(match.gameCreation)}
+              />
             ))
           : null}
         <button
           className="showMore"
           disabled={statsState.maxMatches}
           onClick={() => {
-            showMore(statsState.endIndex + 5);
-            showMoreMatches(statsState.beginIndex + 5, statsState.endIndex + 5);
+            showMore(statsState.endIndex + 6);
+            showMoreMatches();
           }}
         >
           {statsState.maxMatches ? "End of Match History" : "Show More"}

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { version } from "react";
 
 export const endPoints = {
   getSummonerByName:
@@ -94,6 +95,17 @@ export let getQueues = async () => {
       "https://static.developer.riotgames.com/docs/lol/queues.json"
     );
     return data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export let getSummoners = async (version) => {
+  try {
+    const { data } = await axios.get(
+      `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/summoner.json`
+    );
+    return data.data;
   } catch (err) {
     return err;
   }

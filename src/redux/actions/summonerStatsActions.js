@@ -65,10 +65,12 @@ export const showMore = (value) => {
 };
 
 
-export const showMoreMatches = (beginIndex, endIndex) => {
+export const showMoreMatches = () => {
   return (dispatch, getState) => {
     const encryptedSummonerId = getState().stats.accountId;
     const region = getState().region.region;
+    const beginIndex = getState().stats.beginIndex;
+    const endIndex = getState().stats.endIndex;
     return dispatch(
       getMatches(region, encryptedSummonerId, beginIndex, endIndex)
     );
