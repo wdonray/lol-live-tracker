@@ -5,7 +5,11 @@ import LoadingSpinner from "./helpers/LoadingSpinner";
 import { addStyleArray } from "../util/addStyle";
 import search from "../assets/search.png";
 import { gameDate, gameLength } from "../util/unixTimeConverter";
-import { getChampionName, getQueueType } from "../util/formatData";
+import {
+  getChampionName,
+  getQueueType,
+  getSummonerSpell,
+} from "../util/formatData";
 import {
   showMoreMatches,
   showMore,
@@ -219,24 +223,52 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
           <div>{gameLength(match.gameDuration)}</div>
         </div>
         <div className={"matchCard-Item"}>
-          <img
-            className={"matchCard-ChampIcon"}
-            alt={"Icon not found"}
-            src={`http://ddragon.leagueoflegends.com/cdn/${
-              ddragonState.version
-            }/img/champion/${getChampionName(
-              ddragonState.champs,
-              currentParticipant.championId
-            )}.png`}
-          />
-          <span className={"matchCard-ChampName"}>
-            {getChampionName(
-              ddragonState.champs,
-              currentParticipant.championId
-            )}
-          </span>
+          <div className={"matchCard-Item2"}>
+            <div className={"matchCard-SpellContainer"}>
+              <img
+                className={"matchCard-SpellIcon"}
+                alt={"Icon not found"}
+                src={`http://ddragon.leagueoflegends.com/cdn/${
+                  ddragonState.version
+                }/img/spell/${getSummonerSpell(
+                  ddragonState.summoners,
+                  currentParticipant.spell1Id
+                )}.png`}
+              />
+              <img
+                className={"matchCard-SpellIcon"}
+                alt={"Icon not found"}
+                src={`http://ddragon.leagueoflegends.com/cdn/${
+                  ddragonState.version
+                }/img/spell/${getSummonerSpell(
+                  ddragonState.summoners,
+                  currentParticipant.spell2Id
+                )}.png`}
+              />
+            </div>
+            <div className={"matchCard-ChampContainer"}>
+              <img
+                className={"matchCard-ChampIcon"}
+                alt={"Icon not found"}
+                src={`http://ddragon.leagueoflegends.com/cdn/${
+                  ddragonState.version
+                }/img/champion/${getChampionName(
+                  ddragonState.champs,
+                  currentParticipant.championId
+                )}.png`}
+              />
+              <span className={"matchCard-ChampName"}>
+                {getChampionName(
+                  ddragonState.champs,
+                  currentParticipant.championId
+                )}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className={"matchCard-Item"}>Score</div>
+        <div
+          className={"matchCard-Item"}
+        >{`${currentParticipant.stats.kills}/${currentParticipant.stats.deaths}/${currentParticipant.stats.assists}`}</div>
         <div className={"matchCard-Item"}>Build</div>
         <div className={"matchCard-Item"}>Team</div>
       </div>

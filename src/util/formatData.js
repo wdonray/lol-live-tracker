@@ -39,3 +39,7 @@ export let getQueueType = (queues, queueId, gameMode) => {
   }
   return foundQueue.description.replace(" games", "");
 };
+
+export let getSummonerSpell = (summoners, spellId) => {
+  return summoners.find((x) => x.key === spellId.toString()).id;
+}
