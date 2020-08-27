@@ -199,6 +199,22 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
     let currentParticipant = match.participants.find(
       (x) => x.participantId === currentSearched.participantId
     );
+    let kda =
+      (currentParticipant.stats.kills + currentParticipant.stats.assists) /
+      currentParticipant.stats.deaths;
+
+    let items = [
+      currentParticipant.stats.item0,
+      currentParticipant.stats.item1,
+      currentParticipant.stats.item2,
+      currentParticipant.stats.item3,
+      currentParticipant.stats.item4,
+      currentParticipant.stats.item5,
+      currentParticipant.stats.item6,
+    ];
+
+    let team = [];
+
     return (
       <div
         className={"matchCard"}
@@ -206,7 +222,7 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
           backgroundColor: currentParticipant.stats.win ? "#4493c6" : "#ff726f",
         }}
       >
-        <div className={"matchCard-Item"}>
+        <div className={"matchCard-Block"}>
           <div
             style={{
               fontWeight: "bold",
@@ -222,8 +238,8 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
           <div>{gameDate(match.gameCreation)}</div>
           <div>{gameLength(match.gameDuration)}</div>
         </div>
-        <div className={"matchCard-Item"}>
-          <div className={"matchCard-Item2"}>
+        <div className={"matchCard-Block"}>
+          <div className={"matchCard-Block2"}>
             <div className={"matchCard-SpellContainer"}>
               <img
                 className={"matchCard-SpellIcon"}
@@ -266,11 +282,32 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
             </div>
           </div>
         </div>
-        <div
-          className={"matchCard-Item"}
-        >{`${currentParticipant.stats.kills}/${currentParticipant.stats.deaths}/${currentParticipant.stats.assists}`}</div>
-        <div className={"matchCard-Item"}>Build</div>
-        <div className={"matchCard-Item"}>Team</div>
+        <div className={"matchCard-Block"}>
+          <p>{`${currentParticipant.stats.kills}/${currentParticipant.stats.deaths}/${currentParticipant.stats.assists}`}</p>
+          <p style={{ opacity: 0.8, fontSize: "small" }}>{`${kda.toFixed(
+            2
+          )} KDA`}</p>
+        </div>
+        <div className={"matchCard-Block"}>
+          <div className={"matchCard-Items"}>
+            {items.map((id) => (
+              <div
+                key={id + Math.random()}
+                className={"matchCard-Item"}
+                style={{ opacity: id === 0 ? 0.8 : 1 }}
+              >
+                {id === 0 ? null : (
+                  <img
+                    className={"matchCard-ItemIcon"}
+                    src={`http://ddragon.leagueoflegends.com/cdn/${ddragonState.version}/img/item/${id}.png`}
+                    alt="noItemImage"
+                  ></img>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={"matchCard-Block"}>Team</div>
       </div>
     );
   };

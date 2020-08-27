@@ -120,7 +120,7 @@ p {
   position: relative;
 }
 
-.matchCard-Item {
+.matchCard-Block {
   text-align: center;
   line-height: 16px;
   display: table-cell;
@@ -132,7 +132,7 @@ p {
   text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;
 }
 
-.matchCard-Item2 {
+.matchCard-Block2 {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -171,6 +171,7 @@ p {
 
 .matchCard-SpellIcon {
   border-radius: 5px;
+  width: 50%;
   height: 100%;
   overflow: hidden;
   margin-bottom: 5px;
@@ -193,6 +194,26 @@ p {
   margin-top: -10%;
   position: relative;
   display: table;
+}
+
+.matchCard-Items {
+  width: 75%;
+}
+
+.matchCard-Item {
+  display: inline-block;
+  background-color: gainsboro;
+  width: 1.5vw;
+  height: 1.5vw;
+  margin-top: 2px;
+  margin-right: 2px;
+  border-radius: 3px;
+  border: 0.5px solid black;
+}
+
+.matchCard-ItemIcon {
+  width: 100%;
+  height: auto;
 }
 
 .showMore {
