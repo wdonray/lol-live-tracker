@@ -212,8 +212,8 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
       currentParticipant.stats.item5,
       currentParticipant.stats.item6,
     ];
-
-    let team = [];
+    let team100 = match.participants.filter((x) => x.teamId === 100);
+    let team200 = match.participants.filter((x) => x.teamId === 200);
 
     return (
       <div
@@ -294,7 +294,7 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
               <div
                 key={id + Math.random()}
                 className={"matchCard-Item"}
-                style={{ opacity: id === 0 ? 0.8 : 1 }}
+                style={{ opacity: id === 0 ? 0.5 : 1 }}
               >
                 {id === 0 ? null : (
                   <img
@@ -307,7 +307,70 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
             ))}
           </div>
         </div>
-        <div className={"matchCard-Block"}>Team</div>
+        <div className={"matchCard-Block"}>
+          <div className={"matchCard-TeamContainer"}>
+            <div className={"matchCard-TeamInfo"}>
+              {team100.map((x) => (
+                <div
+                  key={x.participantId}
+                  className={"matchCard-TeamContainer"}
+                >
+                  <img
+                    className={"matchCard-TeamChampIcon"}
+                    alt={"Icon not found"}
+                    src={`http://ddragon.leagueoflegends.com/cdn/${
+                      ddragonState.version
+                    }/img/champion/${getChampionName(
+                      ddragonState.champs,
+                      x.championId
+                    )}.png`}
+                  />
+                  <p
+                    className={"matchCard-TeamPlayerName"}
+                    style={{
+                      color: currentParticipant === x ? "gold" : "white",
+                    }}
+                  >
+                    {
+                      match.participantIdentities[x.participantId - 1].player
+                        .summonerName
+                    }
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className={"matchCard-TeamInfo"}>
+              {team200.map((x) => (
+                <div
+                  key={x.participantId}
+                  className={"matchCard-TeamContainer"}
+                >
+                  <img
+                    className={"matchCard-TeamChampIcon"}
+                    alt={"Icon not found"}
+                    src={`http://ddragon.leagueoflegends.com/cdn/${
+                      ddragonState.version
+                    }/img/champion/${getChampionName(
+                      ddragonState.champs,
+                      x.championId
+                    )}.png`}
+                  />
+                  <p
+                    className={"matchCard-TeamPlayerName"}
+                    style={{
+                      color: currentParticipant === x ? "gold" : "white",
+                    }}
+                  >
+                    {
+                      match.participantIdentities[x.participantId - 1].player
+                        .summonerName
+                    }
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   };

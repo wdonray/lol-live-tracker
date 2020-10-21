@@ -216,6 +216,35 @@ p {
   height: auto;
 }
 
+.matchCard-TeamContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.matchCard-TeamInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.matchCard-TeamChampIcon {
+  width: 1.5vw;
+  height: 1.5vw;
+}
+
+.matchCard-TeamPlayerName {
+  font-size: x-small;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 3vw;
+  margin-left: 0.2vw;
+}
+
 .showMore {
 }
 
