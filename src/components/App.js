@@ -31,7 +31,7 @@ let mapDispatch = (dispatch) => {
 function App({ updateDDragon }) {
   React.useEffect(() => {
     updateDDragon();
-  }, []);
+  }, [updateDDragon]);
 
   return (
     <div className="App">

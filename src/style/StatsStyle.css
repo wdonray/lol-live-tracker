@@ -41,6 +41,20 @@
   text-decoration: none;
 }
 
+.mobilePanel {
+  height: auto;
+  width: 100%;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #3277a3;
+  overflow: hidden;
+  transition: 0.5s;
+  display: flex;
+  place-items: center;
+  border: 1px solid #cdd2d2;
+}
+
 .rankedIcon {
   width: 30%;
 }
@@ -96,9 +110,10 @@ p {
   place-items: center;
   text-align: center;
   transition: 0.5s;
-  margin-left: 35%;
+  margin: auto;
   width: 30vw;
 }
+
 .searchImage {
   width: 20vw;
 }
@@ -153,6 +168,7 @@ p {
   display: inline-block;
   overflow: hidden;
 }
+
 .matchCard-SpellContainer {
   margin-right: -2.5vw;
   height: 100%;
@@ -254,5 +270,82 @@ p {
   }
   .leftSidePanel a {
     font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .matchCardContainer {
+    width: 95%;
+  }
+
+  .matchCard-SpellIcon {
+    width: 40%;
+    height: 100%;
+    margin-bottom: 5px;
+  }
+
+  .matchCard-ChampName {
+    border: 0.5px solid black;
+    font-size: xx-small;
+    padding: 0.3px;
+  }
+
+  .matchCard-SpellContainer {
+    margin-right: -5.5vw;
+  }
+
+  .matchCard-Block p {
+    font-size: 0.8rem;
+  }
+
+  .matchCard-Items {
+    width: 100%;
+  }
+
+  .matchCard-Item {
+    width: 5vw;
+    height: 5vw;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .matchCard-ItemIcon {
+    width: 100%;
+    height: auto;
+  }
+
+  .searchContainer {
+    margin: auto;
+    width: 100vw;
+  }
+
+  .searchImage {
+    width: 50vw;
+  }
+
+  .profileIconImage {
+    width: 15vw;
+  }
+
+  .rankedIcon {
+    width: 10vw;
+  }
+
+  .level {
+    margin-right: auto;
+    box-sizing: border-box;
+    background-size: 100%;
+    line-height: 17px;
+    text-align: center;
+    background-color: #202020;
+    border: 0.5px solid gold;
+    border-radius: 5px;
+    font-size: smaller;
+    color: gold;
+    width: 50%;
+  }
+
+  .mobilePanel p {
+    font-size: x-small;
   }
 }

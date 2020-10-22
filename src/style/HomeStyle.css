@@ -62,5 +62,11 @@
 @media only screen and (max-width: 600px) {
   .centerContainer p {
     font-size: 0.8rem;
+    width: 50%;
+    margin: auto;
+  }
+
+  .centerContainer {
+    width: 100%;
   }
 }

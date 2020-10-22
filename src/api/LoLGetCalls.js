@@ -1,5 +1,4 @@
 import axios from "axios";
-import { version } from "react";
 
 export const endPoints = {
   getSummonerByName:
