@@ -35,7 +35,7 @@ function SearchFrom({
 }) {
   let location = useLocation();
   let history = useHistory();
-  let [summonerName, updateSummonerName] = React.useState("");
+  let [summonerName, updateSummonerName] = React.useState("HULKSMASH1337");
   return (
     <form
       style={{ opacity: location.pathname === "/" && header ? 0 : 1 }}
@@ -43,7 +43,9 @@ function SearchFrom({
         event.preventDefault();
         if (!statsState.loading) {
           searchSummoner(regionState.region, summonerName).then((data) => {
-            history.push("/stats");
+            if (location.pathname === "/") {
+              history.push("/stats");
+            }
             updateLoading(false);
             if (data.payload instanceof Error) {
               //If an account has no matches it will show error

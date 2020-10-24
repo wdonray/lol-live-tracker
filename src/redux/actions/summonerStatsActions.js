@@ -3,6 +3,7 @@ import {
   getMatchHistory,
   getSummonerByName,
   getSummonerStats,
+  getActiveGame,
 } from "../../api/LoLGetCalls";
 
 export const getSumName = (region, summonerName) => {
@@ -21,6 +22,15 @@ export const getSumStats = (region, encryptedSummonerId) => {
   };
 };
 
+export const getLiveGame = (region, encryptedSummonerId) => {
+  return (dispatch) => {
+    return getActiveGame(region, encryptedSummonerId).then((data) => {
+      //console.log({liveGame: data});
+      return dispatch({ type: StatsTypes.UPDATE_SUMMONER, payload: {liveGame: data} });
+    });
+  };
+};
+
 export const getMatches = (
   region,
   encryptedSummonerId,
@@ -34,7 +44,6 @@ export const getMatches = (
       beginIndex,
       endIndex
     ).then((data) => {
-
       if (Array.isArray(data) && data.length !== 0) {
         return dispatch({
           type: StatsTypes.UPDATE_MATCHES,
@@ -64,7 +73,6 @@ export const showMore = (value) => {
   };
 };
 
-
 export const showMoreMatches = () => {
   return (dispatch, getState) => {
     const encryptedSummonerId = getState().stats.accountId;
@@ -89,7 +97,9 @@ export const searchSummoner = (region, summonerName) => {
       return dispatch(getSumStats(region, id)).then(() => {
         return dispatch(
           getMatches(region, encryptedSummonerId, beginIndex, endIndex)
-        );
+        ).then(() => {
+          return dispatch(getLiveGame(region, id));
+        });
       });
     });
   };

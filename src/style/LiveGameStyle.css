@@ -1,0 +1,22 @@
+.playerBanner {
+  /* background-color: red; */
+  width: 90vw;
+  height: 10vh;
+  margin: auto auto 10px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mainContainer {
+  /* background-color: aqua; */
+  width: 90vw;
+  height: 75vh;
+  margin: auto;
+}
+
+.refresh {
+    float: right;
+    vertical-align: middle;
+}

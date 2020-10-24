@@ -15,6 +15,7 @@ export default (state = initState, action) => {
       } else if (Object.keys(action.payload).includes("isAxiosError")) {
         return { ...state };
       }
+      
       return {
         ...state,
         ...action.payload,
