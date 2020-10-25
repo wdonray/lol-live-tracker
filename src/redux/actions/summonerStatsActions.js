@@ -25,8 +25,10 @@ export const getSumStats = (region, encryptedSummonerId) => {
 export const getLiveGame = (region, encryptedSummonerId) => {
   return (dispatch) => {
     return getActiveGame(region, encryptedSummonerId).then((data) => {
-      //console.log({liveGame: data});
-      return dispatch({ type: StatsTypes.UPDATE_SUMMONER, payload: {liveGame: data} });
+      return dispatch({
+        type: StatsTypes.UPDATE_SUMMONER,
+        payload: data instanceof Error ? undefined : { liveGame: data },
+      });
     });
   };
 };
@@ -94,11 +96,11 @@ export const searchSummoner = (region, summonerName) => {
       const id = getState().stats.id;
       const endIndex = getState().stats.endIndex;
       const beginIndex = getState().stats.beginIndex;
-      return dispatch(getSumStats(region, id)).then(() => {
+      return dispatch(getLiveGame(region, id)).then(() => {
         return dispatch(
           getMatches(region, encryptedSummonerId, beginIndex, endIndex)
         ).then(() => {
-          return dispatch(getLiveGame(region, id));
+          return dispatch(getSumStats(region, id));
         });
       });
     });

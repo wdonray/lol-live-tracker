@@ -4,7 +4,8 @@ const initState = {
   champs: null,
   version: null,
   queues: null,
-  summoners: null
+  summoners: null,
+  maps: null,
 };
 
 export default (state = initState, action) => {
@@ -20,6 +21,9 @@ export default (state = initState, action) => {
     }
     case DDragonTypes.UPDATE_SUMMONERS: {
       return { ...state, summoners: action.payload };
+    }
+    case DDragonTypes.UPDATE_MAPS: {
+      return { ...state, maps: action.payload };
     }
     default:
       return state;

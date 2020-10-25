@@ -3,11 +3,8 @@ import { connect } from "react-redux";
 import search from "../assets/search.png";
 import LoadingSpinner from "./helpers/LoadingSpinner";
 import "../style/LiveGameStyle.css";
-import {
-  getChampionName,
-  getQueueType,
-  getSummonerSpell,
-} from "../util/formatData";
+import { liveGameLength } from "../util/unixTimeConverter";
+import { getChampionName, getQueueType, getMapName } from "../util/formatData";
 
 let mapState = (store) => {
   return {
@@ -18,8 +15,11 @@ let mapState = (store) => {
 };
 
 function LiveGame({ statsState, ddragonState }) {
-  console.log(statsState.liveGame);
+  console.log(statsState.liveGame, statsState.loading);
   const [width, setWidth] = React.useState(window.innerWidth);
+  const [gameLength, setGameLength] = React.useState(
+    statsState.liveGame ? statsState.liveGame.gameLength : 0
+  );
   let isMobile = width <= 768;
 
   React.useEffect(() => {
@@ -35,28 +35,32 @@ function LiveGame({ statsState, ddragonState }) {
 
   return (
     <div style={{ color: "white" }}>
-      {statsState.loading ? <LoadingSpinner /> : null}
-      {statsState.id || statsState.loading ? null : (
+      {statsState.loading ? (
+        <LoadingSpinner />
+      ) : statsState.liveGame ? (
+        <div>
+          <div className={"playerBanner"}>
+            <p>
+              {getQueueType(
+                ddragonState.queues,
+                statsState.liveGame.gameQueueConfigId,
+                statsState.liveGame.gameMode
+              )}{" "}
+              | {getMapName(ddragonState.maps, statsState.liveGame.mapId)} |{" "}
+              {liveGameLength(statsState.liveGame.gameLength)}
+            </p>
+            <button className={"refresh"}>Refresh</button>
+          </div>
+          <div className={"mainContainer"}>IN PROGRESS</div>{" "}
+        </div>
+      ) : (
         <div
-          style={{ opacity: statsState.id || statsState.loading ? 0 : 1 }}
           className={"searchContainer"}
         >
           <img alt="404" src={search} className={"searchImage"} />
           <p>Please search for a summoner</p>
         </div>
       )}
-      <div
-        style={{ opacity: statsState.liveGame ? 1 : 0 }}
-        className={"playerBanner"}
-      >
-        {/* <button className={'refresh'}>Refresh</button> */}
-      </div>
-      <div
-        style={{ opacity: statsState.liveGame ? 1 : 0 }}
-        className={"mainContainer"}
-      >
-        IN PROGRESS
-      </div>
     </div>
   );
 }

@@ -42,4 +42,8 @@ export let getQueueType = (queues, queueId, gameMode) => {
 
 export let getSummonerSpell = (summoners, spellId) => {
   return summoners.find((x) => x.key === spellId.toString()).id;
-}
+};
+
+export let getMapName = (maps, mapId) => {
+  return maps.find((x) => x.mapId === mapId).mapName;
+};

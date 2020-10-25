@@ -109,3 +109,14 @@ export let getSummoners = async (version) => {
     return err;
   }
 };
+
+export let getMaps = async () => {
+  try {
+    const { data } = await axios.get(
+      "https://static.developer.riotgames.com/docs/lol/maps.json"
+    );
+    return data;
+  } catch (err) {
+    return err;
+  }
+};

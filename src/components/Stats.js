@@ -464,9 +464,8 @@ function Stats({ statsState, ddragonState, showMore, showMoreMatches }) {
           <p>Please search for a summoner</p>
         </div>
       )}
-
       <div
-        style={{ opacity: statsState.matches ? 1 : 0 }}
+        style={{ opacity: statsState.matches && !statsState.loading ? 1 : 0 }}
         className={"matchCardContainer"}
       >
         {isMobile ? <MobilePanel /> : null}

@@ -47,7 +47,11 @@ function SearchFrom({
               history.push("/stats");
             }
             updateLoading(false);
-            if (data.payload instanceof Error) {
+            // console.log(data.payload)
+            if (
+              data.payload instanceof Error ||
+              typeof data.payload === "undefined"
+            ) {
               //If an account has no matches it will show error
               snackBar();
             }

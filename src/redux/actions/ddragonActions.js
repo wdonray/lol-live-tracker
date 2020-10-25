@@ -1,5 +1,11 @@
 import { DDragonTypes } from "../constants/actionTypes";
-import { getVersions, getChamps, getQueues, getSummoners } from "../../api/LoLGetCalls";
+import {
+  getVersions,
+  getChamps,
+  getQueues,
+  getSummoners,
+  getMaps,
+} from "../../api/LoLGetCalls";
 
 export const updateChamps = (version) => {
   return (dispatch) => {
@@ -45,13 +51,26 @@ export const updateSummoners = (version) => {
   };
 };
 
+export const updateMaps = () => {
+  return (dispatch) => {
+    return getMaps().then((response) =>
+      dispatch({
+        type: DDragonTypes.UPDATE_MAPS,
+        payload: response,
+      })
+    );
+  };
+};
+
 export const updateDDragon = () => {
   return (dispatch, getState) => {
     return dispatch(updateVersion()).then(() => {
       const version = getState().ddragon.version;
       console.log(version);
       return dispatch(updateChamps(version)).then(() =>
-        dispatch(updateQueues()).then(() => dispatch(updateSummoners(version)))
+        dispatch(updateQueues()).then(() =>
+          dispatch(updateSummoners(version)).then(() => dispatch(updateMaps()))
+        )
       );
     });
   };
