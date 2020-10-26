@@ -5,6 +5,7 @@ import LoadingSpinner from "./helpers/LoadingSpinner";
 import "../style/LiveGameStyle.css";
 import { liveGameLength } from "../util/unixTimeConverter";
 import { getChampionName, getQueueType, getMapName } from "../util/formatData";
+import { getLiveGame } from "../redux/actions/summonerStatsActions";
 
 let mapState = (store) => {
   return {
@@ -14,12 +15,16 @@ let mapState = (store) => {
   };
 };
 
-function LiveGame({ statsState, ddragonState }) {
-  console.log(statsState.liveGame, statsState.loading);
+let mapDispatch = (dispatch) => {
+  return {
+    getLiveGame: (region, id) => dispatch(getLiveGame(region, id)),
+  };
+};
+
+function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
+  // console.log(statsState.liveGame);
   const [width, setWidth] = React.useState(window.innerWidth);
-  const [gameLength, setGameLength] = React.useState(
-    statsState.liveGame ? statsState.liveGame.gameLength : 0
-  );
+  const [gameLength, setGameLength] = React.useState(0);
   let isMobile = width <= 768;
 
   React.useEffect(() => {
@@ -27,11 +32,18 @@ function LiveGame({ statsState, ddragonState }) {
       setWidth(window.innerWidth);
     }
 
+    const interval = setInterval(() => {
+      if (statsState.liveGame) {
+        setGameLength((gameLength) => gameLength + 1);
+      }
+    }, 1000);
+
     window.addEventListener("resize", handleWindowSizeChange);
     return () => {
       window.removeEventListener("resize", handleWindowSizeChange);
+      clearInterval(interval);
     };
-  }, [isMobile]);
+  }, [isMobile, gameLength, statsState.liveGame]);
 
   return (
     <div style={{ color: "white" }}>
@@ -47,16 +59,20 @@ function LiveGame({ statsState, ddragonState }) {
                 statsState.liveGame.gameMode
               )}{" "}
               | {getMapName(ddragonState.maps, statsState.liveGame.mapId)} |{" "}
-              {liveGameLength(statsState.liveGame.gameLength)}
+              {liveGameLength(statsState.liveGame.gameLength + gameLength)}
             </p>
-            <button className={"refresh"}>Refresh</button>
+            <button
+              type="button"
+              className={"refresh"}
+              onClick={() => getLiveGame(regionState.region, statsState.id)}
+            >
+              Refresh
+            </button>
           </div>
           <div className={"mainContainer"}>IN PROGRESS</div>{" "}
         </div>
       ) : (
-        <div
-          className={"searchContainer"}
-        >
+        <div className={"searchContainer"}>
           <img alt="404" src={search} className={"searchImage"} />
           <p>Please search for a summoner</p>
         </div>
@@ -65,4 +81,4 @@ function LiveGame({ statsState, ddragonState }) {
   );
 }
 
-export default connect(mapState)(LiveGame);
+export default connect(mapState, mapDispatch)(LiveGame);

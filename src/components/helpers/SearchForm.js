@@ -35,7 +35,7 @@ function SearchFrom({
 }) {
   let location = useLocation();
   let history = useHistory();
-  let [summonerName, updateSummonerName] = React.useState("HULKSMASH1337");
+  let [summonerName, updateSummonerName] = React.useState("Gate");
   return (
     <form
       style={{ opacity: location.pathname === "/" && header ? 0 : 1 }}

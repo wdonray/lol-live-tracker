@@ -25,6 +25,7 @@ export const getSumStats = (region, encryptedSummonerId) => {
 export const getLiveGame = (region, encryptedSummonerId) => {
   return (dispatch) => {
     return getActiveGame(region, encryptedSummonerId).then((data) => {
+      console.log(data)
       return dispatch({
         type: StatsTypes.UPDATE_SUMMONER,
         payload: data instanceof Error ? undefined : { liveGame: data },
