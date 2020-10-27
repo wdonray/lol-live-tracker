@@ -6,6 +6,8 @@ import "../style/LiveGameStyle.css";
 import { liveGameLength } from "../util/unixTimeConverter";
 import { getChampionName, getQueueType, getMapName } from "../util/formatData";
 import { getLiveGame } from "../redux/actions/summonerStatsActions";
+import { getSummonerStats } from "../api/LoLGetCalls";
+import * as _ from "lodash";
 
 let mapState = (store) => {
   return {
@@ -24,7 +26,9 @@ let mapDispatch = (dispatch) => {
 function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
   console.log(statsState);
   const [width, setWidth] = React.useState(window.innerWidth);
-  const [gameLength, setGameLength] = React.useState(0);
+  // const [gameLength, setGameLength] = React.useState(0);
+  const [blueTeam, setBlueTeam] = React.useState([]);
+  const [redTeam, setRedTeam] = React.useState([]);
   let isMobile = width <= 768;
 
   React.useEffect(() => {
@@ -34,7 +38,17 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
 
     const interval = setInterval(() => {
       if (statsState.liveGame) {
-        setGameLength((gameLength) => gameLength + 1);
+        // setGameLength((gameLength) => gameLength + 1);
+        if (blueTeam.length === 0) {
+          setBlueTeam(
+            _.filter(statsState.liveGame.participants, (x) => x.teamId === 100)
+          );
+        }
+        if (redTeam.length === 0) {
+          setRedTeam(
+            _.filter(statsState.liveGame.participants, (x) => x.teamId === 200)
+          );
+        }
       }
     }, 1000);
 
@@ -43,7 +57,7 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
       window.removeEventListener("resize", handleWindowSizeChange);
       clearInterval(interval);
     };
-  }, [isMobile, gameLength, statsState.liveGame]);
+  }, [isMobile, statsState.liveGame, redTeam, blueTeam]);
 
   return (
     <div style={{ color: "white" }}>
@@ -58,9 +72,11 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
                   ddragonState.queues,
                   statsState.liveGame.gameQueueConfigId,
                   statsState.liveGame.gameMode
-                )}{" "}
+                )}
                 | {getMapName(ddragonState.maps, statsState.liveGame.mapId)} |{" "}
-                {liveGameLength(statsState.liveGame.gameLength + gameLength)}
+                {liveGameLength(
+                  statsState.liveGame.gameLength
+                )}
               </p>
               <button
                 type="button"
@@ -70,7 +86,77 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
                 Refresh
               </button>
             </div>
-            <div className={"mainContainer"}>IN PROGRESS</div>{" "}
+            <div className={"mainContainer"}>
+              <table className={"blueOuter"}>
+                <thead className={"blueHeader"}>
+                  <tr>
+                    <th>Blue Team</th>
+                    <th>Champion</th>
+                    <th>Ranked Winrate</th>
+                    <th>Info</th>
+                    <th>Division</th>
+                    <th>Ban</th>
+                  </tr>
+                </thead>
+                <tbody id={"blueBody"} className={"blueInner"}>
+                  {_.map(blueTeam, (x) => {
+                    let stats = null;
+                    getSummonerStats(
+                      regionState.region,
+                      x.summonerId
+                    ).then(x => console.log(x)); 
+                    return (
+                      <tr key={x.summonerId}>
+                        <td>{x.summonerName}</td>
+                        <td>
+                          <img
+                            className={"champIcon"}
+                            alt={"Icon not found"}
+                            src={`http://ddragon.leagueoflegends.com/cdn/${
+                              ddragonState.version
+                            }/img/champion/${getChampionName(
+                              ddragonState.champs,
+                              x.championId
+                            )}.png`}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <table className={"redOuter"}>
+                <thead className={"redHeader"}>
+                  <tr>
+                    <th>Red Team</th>
+                    <th>Champion</th>
+                    <th>Ranked Winrate</th>
+                    <th>Info</th>
+                    <th>Division</th>
+                    <th>Ban</th>
+                  </tr>
+                </thead>
+                <tbody id={"redBody"} className={"redInner"}>
+                  {_.map(redTeam, (x) => (
+                    <tr key={x.summonerId}>
+                      <td>{x.summonerName}</td>
+                      <td>
+                        <img
+                          className={"champIcon"}
+                          alt={"Icon not found"}
+                          src={`http://ddragon.leagueoflegends.com/cdn/${
+                            ddragonState.version
+                          }/img/champion/${getChampionName(
+                            ddragonState.champs,
+                            x.championId
+                          )}.png`}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         ) : (
           <div className={"searchContainer"}>
