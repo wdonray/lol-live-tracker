@@ -8,6 +8,7 @@ import { getChampionName, getQueueType, getMapName } from "../util/formatData";
 import { getLiveGame } from "../redux/actions/summonerStatsActions";
 import { getSummonerStats } from "../api/LoLGetCalls";
 import * as _ from "lodash";
+import axios from "axios";
 
 let mapState = (store) => {
   return {
@@ -24,11 +25,8 @@ let mapDispatch = (dispatch) => {
 };
 
 function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
-  console.log(statsState);
   const [width, setWidth] = React.useState(window.innerWidth);
-  // const [gameLength, setGameLength] = React.useState(0);
-  const [blueTeam, setBlueTeam] = React.useState([]);
-  const [redTeam, setRedTeam] = React.useState([]);
+  const [teams, setTeams] = React.useState({});
   let isMobile = width <= 768;
 
   React.useEffect(() => {
@@ -36,35 +34,55 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
       setWidth(window.innerWidth);
     }
 
-    const interval = setInterval(() => {
-      if (statsState.liveGame) {
-        // setGameLength((gameLength) => gameLength + 1);
-        if (blueTeam.length === 0) {
-          setBlueTeam(
-            _.filter(statsState.liveGame.participants, (x) => x.teamId === 100)
+    const fetchData = async () => {
+      try {
+        const getTeam = (teamNumber) =>
+          _.filter(
+            _.map(statsState.liveGame.participants, (x) => {
+              if (x.teamId === teamNumber) {
+                return {
+                  stats: getSummonerStats(regionState.region, x.summonerId),
+                  gameData: x,
+                };
+              }
+            }),
+            (x) => x !== undefined
           );
-        }
-        if (redTeam.length === 0) {
-          setRedTeam(
-            _.filter(statsState.liveGame.participants, (x) => x.teamId === 200)
-          );
-        }
+
+        let blueTeam = getTeam(100);
+        let redTeam = getTeam(200);
+
+        blueTeam.stats = await axios.all(_.map(blueTeam, (x) => x.stats));
+        redTeam.stats = await axios.all(_.map(redTeam, (x) => x.stats));
+
+        setTeams((prevState) => ({
+          ...prevState,
+          blue: blueTeam,
+          red: redTeam,
+        }));
+      } catch (e) {
+        console.log(e);
       }
-    }, 1000);
+    };
+
+    if (statsState.liveGame && _.isEmpty(teams)) {
+      fetchData();
+    }
+
+    console.log(teams);
 
     window.addEventListener("resize", handleWindowSizeChange);
     return () => {
       window.removeEventListener("resize", handleWindowSizeChange);
-      clearInterval(interval);
     };
-  }, [isMobile, statsState.liveGame, redTeam, blueTeam]);
+  }, [isMobile, statsState.liveGame, teams, regionState]);
 
   return (
     <div style={{ color: "white" }}>
       {statsState.loading ? (
         <LoadingSpinner />
       ) : statsState.id ? (
-        statsState.liveGame ? (
+        _.isEmpty(teams) ? (
           <div>
             <div className={"playerBanner"}>
               <p>
@@ -74,9 +92,7 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
                   statsState.liveGame.gameMode
                 )}
                 | {getMapName(ddragonState.maps, statsState.liveGame.mapId)} |{" "}
-                {liveGameLength(
-                  statsState.liveGame.gameLength
-                )}
+                {liveGameLength(statsState.liveGame.gameLength)}
               </p>
               <button
                 type="button"
@@ -99,30 +115,23 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
                   </tr>
                 </thead>
                 <tbody id={"blueBody"} className={"blueInner"}>
-                  {_.map(blueTeam, (x) => {
-                    let stats = null;
-                    getSummonerStats(
-                      regionState.region,
-                      x.summonerId
-                    ).then(x => console.log(x)); 
-                    return (
-                      <tr key={x.summonerId}>
-                        <td>{x.summonerName}</td>
-                        <td>
-                          <img
-                            className={"champIcon"}
-                            alt={"Icon not found"}
-                            src={`http://ddragon.leagueoflegends.com/cdn/${
-                              ddragonState.version
-                            }/img/champion/${getChampionName(
-                              ddragonState.champs,
-                              x.championId
-                            )}.png`}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {_.map(teams.blue, (x) => (
+                    <tr key={x.summonerId}>
+                      <td>{x.summonerName}</td>
+                      <td>
+                        <img
+                          className={"champIcon"}
+                          alt={"Icon not found"}
+                          src={`http://ddragon.leagueoflegends.com/cdn/${
+                            ddragonState.version
+                          }/img/champion/${getChampionName(
+                            ddragonState.champs,
+                            x.championId
+                          )}.png`}
+                        />
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
               <table className={"redOuter"}>
@@ -137,7 +146,7 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
                   </tr>
                 </thead>
                 <tbody id={"redBody"} className={"redInner"}>
-                  {_.map(redTeam, (x) => (
+                  {_.map(teams.red, (x) => (
                     <tr key={x.summonerId}>
                       <td>{x.summonerName}</td>
                       <td>
