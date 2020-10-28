@@ -34,36 +34,37 @@ function LiveGame({ statsState, ddragonState, regionState, getLiveGame }) {
       setWidth(window.innerWidth);
     }
 
-    const fetchData = async () => {
-      try {
-        const getTeam = (teamNumber) =>
-          _.filter(
-            _.map(statsState.liveGame.participants, (x) => {
-              if (x.teamId === teamNumber) {
-                return {
-                  stats: getSummonerStats(regionState.region, x.summonerId),
-                  gameData: x,
-                };
-              }
-            }),
-            (x) => x !== undefined
-          );
+    async function fetchData() {
+      const getTeam = (teamNumber) =>
+        _.filter(
+          _.map(statsState.liveGame.participants, (x) => {
+            if (x.teamId === teamNumber) {
+              return {
+                stats: getSummonerStats(regionState.region, x.summonerId),
+                gameData: x,
+              };
+            }
+          }),
+          (x) => x !== undefined
+        );
 
-        let blueTeam = getTeam(100);
-        let redTeam = getTeam(200);
+      let blueTeam = getTeam(100);
+      let redTeam = getTeam(200);
 
-        blueTeam.stats = await axios.all(_.map(blueTeam, (x) => x.stats));
-        redTeam.stats = await axios.all(_.map(redTeam, (x) => x.stats));
+      let blueResp = await axios
+        .all(_.map(blueTeam, (x) => x.stats))
+        .catch((err) => console.log(err));
+      let redResp = await axios
+        .all(_.map(redTeam, (x) => x.stats))
+        .catch((err) => console.log(err));
+      console.log(blueResp, redResp);
 
-        setTeams((prevState) => ({
-          ...prevState,
-          blue: blueTeam,
-          red: redTeam,
-        }));
-      } catch (e) {
-        console.log(e);
-      }
-    };
+      setTeams((prevState) => ({
+        ...prevState,
+        blue: blueTeam,
+        red: redTeam,
+      }));
+    }
 
     if (statsState.liveGame && _.isEmpty(teams)) {
       fetchData();
